@@ -35,9 +35,16 @@
     "test:latest": "npm i react@latest react-dom@latest && npm test",
     "prepublishOnly": "npm run test:compat && npm run build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "preact": "^8.3.1",
+    "preact-compat": "^3.18.4",
+    "preact-context": "^1.1.2"
+  },
   "peerDependencies": {
-    "react": ">=16.3.1"
+    "preact": "^8.2.6",
+    "preact-compat": "^3.17.0",
+    "preact-context": "1.1.2"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -47,6 +54,7 @@
     "babel-preset-stage-2": "6.24.1",
     "jest": "23.6.0",
     "jest-dom": "2.1.0",
+    "preact-testing-library": "^0.3.0",
     "react": "16.6.3",
     "react-dom": "16.6.3",
     "react-testing-library": "5.2.3"

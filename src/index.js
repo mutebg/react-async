@@ -1,5 +1,5 @@
-import React from "react"
-
+import { Component } from "preact";
+import { createContext } from "preact-context";
 const isFunction = arg => typeof arg === "function"
 
 /**
@@ -7,9 +7,9 @@ const isFunction = arg => typeof arg === "function"
  * A unique instance also uses its own React context for better nesting capability.
  */
 export const createInstance = (defaultProps = {}) => {
-  const { Consumer, Provider } = React.createContext()
+  const { Consumer, Provider } = createContext()
 
-  class Async extends React.Component {
+  class Async extends Component {
     constructor(props) {
       super(props)
 
@@ -107,8 +107,8 @@ export const createInstance = (defaultProps = {}) => {
 
     render() {
       const { children } = this.props
-      if (isFunction(children)) {
-        return <Provider value={this.state}>{children(this.state)}</Provider>
+      if (isFunction(children[0])) {
+        return <Provider value={this.state}>{children[0](this.state)}</Provider>
       }
       if (children !== undefined && children !== null) {
         return <Provider value={this.state}>{children}</Provider>
@@ -123,13 +123,13 @@ export const createInstance = (defaultProps = {}) => {
    * @prop {boolean} persist Show until we have data, even while loading or when an error occurred
    * @prop {Function|Node} children Function (passing state) or React node
    */
-  Async.Pending = ({ children, persist }) => (
+  Async.Pending = ({ children }) => (
     <Consumer>
       {state => {
         if (state.data !== undefined) return null
         if (!persist && state.isLoading) return null
         if (!persist && state.error !== undefined) return null
-        return isFunction(children) ? children(state) : children || null
+        return isFunction(children[0]) ? children[0](state) : children || null
       }}
     </Consumer>
   )
@@ -145,7 +145,7 @@ export const createInstance = (defaultProps = {}) => {
       {state => {
         if (!state.isLoading) return null
         if (initial && state.data !== undefined) return null
-        return isFunction(children) ? children(state) : children || null
+        return isFunction(children[0]) ? children[0](state) : children || null
       }}
     </Consumer>
   )
@@ -162,7 +162,7 @@ export const createInstance = (defaultProps = {}) => {
         if (state.data === undefined) return null
         if (!persist && state.isLoading) return null
         if (!persist && state.error !== undefined) return null
-        return isFunction(children) ? children(state.data, state) : children || null
+        return isFunction(children[0]) ? children[0](state.data, state) : children || null
       }}
     </Consumer>
   )
@@ -178,7 +178,7 @@ export const createInstance = (defaultProps = {}) => {
       {state => {
         if (state.error === undefined) return null
         if (state.isLoading && !persist) return null
-        return isFunction(children) ? children(state.error, state) : children || null
+        return isFunction(children[0]) ? children[0](state.error, state) : children || null
       }}
     </Consumer>
   )

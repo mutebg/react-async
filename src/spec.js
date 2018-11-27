@@ -1,6 +1,6 @@
 import "jest-dom/extend-expect"
-import React from "react"
-import { render, fireEvent, cleanup, waitForElement } from "react-testing-library"
+import preact, { Component} from "preact"
+import { render, fireEvent, cleanup, waitForElement } from "preact-testing-library"
 import Async, { createInstance } from "./"
 
 afterEach(cleanup)
@@ -97,7 +97,7 @@ describe("Async", () => {
   })
 
   test("re-runs the promise when the value of 'watch' changes", () => {
-    class Counter extends React.Component {
+    class Counter extends Component {
       state = { count: 0 }
       inc = () => this.setState(state => ({ count: state.count + 1 }))
       render() {
